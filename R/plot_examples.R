@@ -36,7 +36,7 @@ for(ii in 1:2){
        type="s",lwd=2,col="black",ylab="cases and deaths",xlab="",yaxs="i",main=labelx) # Plot naive CFR
   lines(dates_d,deaths_d,type="s",lwd=2,col="orange") # Plot naive CFR
   
-  plot(dates_burn_in,out_all$mid_n,xlim=date_lim,ylim=c(0,1),yaxs="i",type="l",lwd=2,col="red",ylab="CFR") # Plot naive CFR
+  plot(dates_burn_in,out_all$mid_n,xlim=date_lim,ylim=c(0,1),xlab="",yaxs="i",type="l",lwd=2,col="red",ylab="CFR") # Plot naive CFR
   lines(dates_burn_in,out_all$lower_n,col="red");lines(dates_burn_in,out_all$upper_n,col="red",lwd=0.5)
   
   lines(dates_burn_in,out_all$mid_c,col="blue",lwd=2) # Plot corrected CFR
