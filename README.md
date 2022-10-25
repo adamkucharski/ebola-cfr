@@ -1,6 +1,6 @@
 # ebola-cfr
 
-Code for analysis of CFR.
+Code for case fatality risk estimation in real-time.
 
 ### Quick start guide
 

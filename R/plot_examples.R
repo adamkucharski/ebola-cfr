@@ -46,5 +46,5 @@ for(ii in 1:2){
   
 }
 
-dev.copy(pdf,"CFR_figure.pdf",width=10,height=7) 
+dev.copy(pdf,"plots/CFR_figure.pdf",width=10,height=7) 
 dev.off()
