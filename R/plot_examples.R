@@ -33,7 +33,7 @@ for(ii in 1:2){
   date_lim <- c(min(dates_d),max(dates_d))
   
   plot(dates_d,cases_d,xlim=date_lim,ylim=c(0,1.2*max(cases_d)),
-       type="s",lwd=2,col="black",ylab="cases and deaths",yaxs="i",main=labelx) # Plot naive CFR
+       type="s",lwd=2,col="black",ylab="cases and deaths",xlab="",yaxs="i",main=labelx) # Plot naive CFR
   lines(dates_d,deaths_d,type="s",lwd=2,col="orange") # Plot naive CFR
   
   plot(dates_burn_in,out_all$mid_n,xlim=date_lim,ylim=c(0,1),yaxs="i",type="l",lwd=2,col="red",ylab="CFR") # Plot naive CFR
