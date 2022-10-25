@@ -1,6 +1,6 @@
 # Plot results of 1976 and 2014 Ebola epidemics ---------------------------
 
-par(mfcol=c(2,2),mar=c(3,3,1,1),las=1)
+par(mfcol=c(2,2),mar=c(4,4,1,1),las=1)
 
 for(ii in 1:2){
   
