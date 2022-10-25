@@ -1,4 +1,8 @@
-#Function to work out correction to CFR using maximum likelihood -------
+# - - - - - - - - - - - - - - - - - - - - - - - 
+# CFR MLE estimation function
+# Author: Adam Kucharski
+# https://github.com/adamkucharski/ebola-cfr
+# - - - - - - - - - - - - - - - - - - - - - - - 
 
 scale_cfr <- function(case_incidence, # daily case incidence
                       death_incidence, #daily death incidence

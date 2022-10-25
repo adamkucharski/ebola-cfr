@@ -1,4 +1,8 @@
-# Plot results of 1976 and 2014 Ebola epidemics ---------------------------
+# - - - - - - - - - - - - - - - - - - - - - - - 
+# Plot for 1976 and 2014 Ebola epidemics 
+# Author: Adam Kucharski
+# https://github.com/adamkucharski/ebola-cfr
+# - - - - - - - - - - - - - - - - - - - - - - - 
 
 par(mfcol=c(2,2),mar=c(4,4,1,1),las=1)
 

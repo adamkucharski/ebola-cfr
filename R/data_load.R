@@ -1,3 +1,9 @@
+# - - - - - - - - - - - - - - - - - - - - - - - 
+# Load previous Ebola outbreak data
+# Author: Adam Kucharski
+# https://github.com/adamkucharski/ebola-cfr
+# - - - - - - - - - - - - - - - - - - - - - - - 
+
 # Load data
 data1976 <- read_csv("data/ebola_1976.csv")
 correct_cfr_1976 <- 234/245 # calculate final CFR for validation
