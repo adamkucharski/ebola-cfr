@@ -6,10 +6,16 @@
 
 # Load libraries
 library(tidyverse)
+library(devtools)
+install_github("epiverse-trace/epiparameter")
+library(epiparameter)
 
 # Define probability mass function for onset-to-death
-# Source: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)31387-4/fulltext
-onset_to_death_ebola <- function(x){dgamma(x,shape=1.651,scale=1/0.202)}
+onset_to_death_ebola <- epiparameter::epidist("ebola","onset_to_death")$pmf
+
+xx <- 0:20
+plot(xx,onset_to_death_ebola_2018(xx),xlab="days")
+lines(xx,onset_to_death_ebola_2014(xx))
 
 # Load data and functions
 source("R/data_load.R")

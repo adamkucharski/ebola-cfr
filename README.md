@@ -8,7 +8,7 @@ First, set local path in R to GitHub directory, e.g.:
 `
 setwd("~/Documents/GitHub/ebola-cfr/")
 `
-The main script to reproduce the analysis is in `scripts/main_script.r`. This calls the following R files:
+The main script to reproduce the analysis is in `scripts/main_script.R`. This calls the following R files:
 
 > `R/data_load.R` - Script to load and format data from 1976 outbreak and early stages of 2014 epidemic
 
