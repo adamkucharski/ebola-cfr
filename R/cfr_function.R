@@ -59,3 +59,11 @@ scale_cfr <- function(case_incidence, # daily case incidence
   
   
 }
+
+
+# Output estimate and 95% as text -----------------------------------------
+
+c.text <- function(x,sigF=3){
+  y <- signif(x,sigF)
+  paste(y[1]," (",y[2],"-",y[3],")",sep="")
+}

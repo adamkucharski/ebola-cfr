@@ -14,8 +14,7 @@ library(epiparameter)
 onset_to_death_ebola <- epiparameter::epidist("ebola","onset_to_death")$pmf
 
 xx <- 0:20
-plot(xx,onset_to_death_ebola_2018(xx),xlab="days")
-lines(xx,onset_to_death_ebola_2014(xx))
+plot(xx,onset_to_death_ebola(xx),xlab="days")
 
 # Load data and functions
 source("R/data_load.R")
