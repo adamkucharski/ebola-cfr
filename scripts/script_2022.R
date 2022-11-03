@@ -33,12 +33,12 @@ CFR_binomial <- prop.test(x=sum(!is.na(data_outcome$Date_death)), n=nrow(data_ou
 c(CFR_binomial$estimate,CFR_binomial$conf.int) |> c.text()
 
 # Estimate CFR from incidence data --------------------------------------------------
-case_data <- incidence::incidence(data_ebola$Date_case)$counts
-death_date <- incidence::incidence(data_ebola$Date_death)$counts
+case_data <- incidence2::incidence(data_ebola,Date_case) |> complete_counts()
+death_date <- incidence2::incidence(data_ebola,Date_death) |> complete_counts()
 
 # Estimate CFR:
-out_cfr <- scale_cfr(case_incidence = case_data,
-                     death_incidence = death_date,
+out_cfr <- scale_cfr(case_incidence = case_data$count,
+                     death_incidence = death_date$count,
                      delay_fun = onset_to_death_ebola)
 
 # Output unadjusted ('naive') CFR and 95% CI:
