@@ -7,6 +7,8 @@
 # Load libraries
 library(tidyverse)
 library(devtools)
+library(incidence2)
+library(coarseDataTools)
 install_github("epiverse-trace/epiparameter")
 library(epiparameter)
 
@@ -17,6 +19,7 @@ xx <- 0:20
 plot(xx,onset_to_death_ebola(xx),xlab="days")
 
 # Load data and functions
+# setwd("~/Documents/GitHub/ebola-cfr/")
 source("R/data_load.R")
 source("R/cfr_function.R")
 
@@ -36,6 +39,10 @@ out_cfr$nCFR
 
 # Delay adjusted CFR and 95% CI:
 out_cfr$cCFR
+
+# EMforCFR method in coarseDataTools (Note: work in progress):
+reporting.param <- rep(0,nrow(data1976_all_pick)-1)
+out_em_cfr <- EMforCFR(assumed.nu = onset_to_death_ebola(xx), alpha.start.values = reporting.param, full.data = data1976_all_pick)
 
 
 # Plot estimates over time on both 1976 and 2014 data ------------------------------------------

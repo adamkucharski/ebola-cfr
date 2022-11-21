@@ -30,7 +30,7 @@ data_outcome <- data_ebola %>% filter(!is.na(Date_death) | !is.na(Date_recovered
 
 # Output estimate based on known outcomes
 CFR_binomial <- prop.test(x=sum(!is.na(data_outcome$Date_death)), n=nrow(data_outcome))
-c(CFR_binomial$estimate,CFR_binomial$conf.int) |> c.text()
+(100*c(CFR_binomial$estimate,CFR_binomial$conf.int)) |> c.text()
 
 # Estimate CFR from incidence data --------------------------------------------------
 case_data <- incidence2::incidence(data_ebola,Date_case) |> complete_counts()

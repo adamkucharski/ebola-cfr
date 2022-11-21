@@ -19,3 +19,6 @@ dates_d_2014 <- min(data2014$date) + 0:(length(cases_d_2014)-1)
 # Compile daily data
 data2014_daily <- tibble(date=dates_d_2014,cases=cases_d_2014,deaths=deaths_d_2014)
 
+# Compile data in coarseDataTools format:
+data1976_all <- read_csv("data/ebola_1976_all_outcomes.csv")
+data1976_all <- data1976_all |> mutate(new.times = as.numeric(time - min(data1976_all$time)))
