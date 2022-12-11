@@ -7,6 +7,7 @@
 # Load data
 data1976 <- read_csv("data/ebola_1976.csv")
 correct_cfr_1976 <- 234/245 # calculate final CFR for validation
+cfr_literature_1976 <- 280/318 # From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2395567/
 
 data2014 <- read_csv("data/ebola_2014.csv")
 correct_cfr_2014 <- 0.7
