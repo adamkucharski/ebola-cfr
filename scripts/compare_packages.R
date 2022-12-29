@@ -8,8 +8,10 @@
 # Load libraries
 library(tidyverse)
 library(devtools)
-library(data.table)
+library(data.table) # data.table::update_dev_pkg()
 library(purrr)
+#library(rstan)
+#library(brms)
 
 install_github("BDI-pathogens/EpiLine")
 library(EpiLine)
@@ -80,6 +82,6 @@ truncated_cases <- construct_cases_by_obs_window(
 
 plot_cases_by_obs_window(truncated_cases)
 
-naive_fit <- naive_delay(data = truncated_obs, cores = 4, refresh = 0)
+naive_fit <- naive_delay(data = truncated_obs, cores = 1, refresh = 0)
 
 
