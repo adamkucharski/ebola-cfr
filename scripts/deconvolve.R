@@ -14,16 +14,14 @@ library(epiparameter)
 xx <- 0:150
 data_infections <- 0.1*(2+sin(8*pi*(xx-20)/365))
 n_inf <- length(data_infections) # number of days to consider
-data_infections <- data_infections * rlnorm(n_inf,0,0.2) # add some noise
-
-plot(data_infections) # quick plot to check
+data_infections <- data_infections #* rlnorm(n_inf,0,0.2) # add some noise
 
 # Set delay function pmf
-p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","incubation")$pmf
+p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","onset_to_death")$pmf
 
-# Define transition matrix to construct symptom onset data
+# Define transition matrix to construct outcome data
 f_matrix <- matrix(0,nrow=n_inf,ncol=n_inf)
-n_pcr_days <- 30 # maximum incubation period to consider
+n_pcr_days <- 50 # maximum delay period to consider
 
 for(ii in 1:n_inf){
   i_max <- min(ii+n_pcr_days-1,n_inf)
@@ -34,6 +32,24 @@ for(ii in 1:n_inf){
 }
 
 
+# Quick simulation --------------------------------------------------------
+
+# Simulate outcomes
+data_outcomes <- f_matrix %*% data_infections
+
+par(mfrow=c(1,1),mgp=c(2,0.7,0),mar = c(3,3,1,1))
+
+# Plot original incidence
+plot(data_infections,yaxs="i",ylab="daily incidence (%)",ylim=c(0,0.5),xlab="days")
+points(data_outcomes,col="red")
+title(main=LETTERS[1],adj=0);letter_x <- letter_x+1
+
+
+
+# Run deconvolution methods -----------------------------------------------
+
+
+# Inversion function
 invert_f <- ginv(f_matrix)
 
 # Function to estimate infection incidence from delayed outcomes
@@ -62,17 +78,17 @@ estimate_infections <- function(delayed_outcomes){
 }
 
 # Run simulation function to generate delayed outcomes from original infections
-data_prev <- f_matrix %*% data_infections
-#data_prev <- data_prev * rlnorm(length(data_prev),0,0.05) # add some noise
+data_outcomes <- f_matrix %*% data_infections
+#data_outcomes <- data_outcomes * rlnorm(length(data_outcomes),0,0.05) # add some noise
 
 par(mfrow=c(1,2),mgp=c(2,0.7,0),mar = c(3,3,1,1))
 
 # Plot original incidence
 plot(data_infections,yaxs="i",ylab="daily incidence (%)",ylim=c(0,0.5),xlab="days")
-points(data_prev,col="red")
+points(data_outcomes,col="red")
 title(main=LETTERS[1],adj=0);letter_x <- letter_x+1
 
-inc1 <- estimate_infections(data_prev)
+inc1 <- estimate_infections(data_outcomes)
 lines(inc1,col="blue",lwd=2)
 
 x_shift <- 60; y_shift <- 0.45
@@ -82,13 +98,13 @@ text(labels="estimated infections",x=x_shift,y=(y_shift-0.05),adj=0,col="blue")
 
 # Run again but with noise on delayed outcome observations
 
-data_prev2 <- data_prev * rlnorm(length(data_prev),0,0.01) # add some noise
+data_outcomes2 <- data_outcomes * rlnorm(length(data_outcomes),0,0.01) # add some noise
 
 
 # Plot original incidence
 plot(data_infections,yaxs="i",ylab="daily incidence (%)",ylim=c(0,0.5),xlab="days")
-points(data_prev2,col="red")
+points(data_outcomes2,col="red")
 title(main=LETTERS[2],adj=0);letter_x <- letter_x+1
 
-inc2 <- estimate_infections(data_prev2)
+inc2 <- estimate_infections(data_outcomes2)
 lines(inc2,col="blue",lwd=2)
