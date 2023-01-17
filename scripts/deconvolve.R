@@ -21,11 +21,11 @@ p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","onset_to_death")$pmf
 
 # Define transition matrix to construct outcome data
 f_matrix <- matrix(0,nrow=n_inf,ncol=n_inf)
-n_pcr_days <- 50 # maximum delay period to consider
+n_delay_days <- 50 # maximum delay period to consider
 
 for(ii in 1:n_inf){
-  i_max <- min(ii+n_pcr_days-1,n_inf)
-  j_max <- min(n_inf-ii+1,n_pcr_days)
+  i_max <- min(ii+n_delay_days-1,n_inf)
+  j_max <- min(n_inf-ii+1,n_delay_days)
   
   f_matrix[ii:i_max,ii] <- p_by_day(0:(j_max-1)) # fill matrix entries
   
@@ -58,11 +58,11 @@ estimate_infections <- function(delayed_outcomes){
   # Define transition matrix - 
   n_inf <- length(delayed_outcomes)
   f_matrix <- matrix(0,nrow=n_inf,ncol=n_inf)
-  n_pcr_days <- 30 # maximum incubation period to consider
+  n_delay_days <- 30 # maximum incubation period to consider
   
   for(ii in 1:n_inf){
-    i_max <- min(ii+n_pcr_days-1,n_inf)
-    j_max <- min(n_inf-ii+1,n_pcr_days)
+    i_max <- min(ii+n_delay_days-1,n_inf)
+    j_max <- min(n_inf-ii+1,n_delay_days)
     
     f_matrix[ii:i_max,ii] <- p_by_day(0:(j_max-1))
     
