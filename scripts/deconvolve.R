@@ -17,7 +17,7 @@ n_inf <- length(data_infections) # number of days to consider
 data_infections <- data_infections #* rlnorm(n_inf,0,0.2) # add some noise
 
 # Set delay function pmf
-p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","onset_to_death")$pmf
+p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","incubation")$pmf
 
 # Define transition matrix to construct outcome data
 f_matrix <- matrix(0,nrow=n_inf,ncol=n_inf)
@@ -82,6 +82,7 @@ data_outcomes <- f_matrix %*% data_infections
 #data_outcomes <- data_outcomes * rlnorm(length(data_outcomes),0,0.05) # add some noise
 
 par(mfrow=c(1,2),mgp=c(2,0.7,0),mar = c(3,3,1,1))
+letter_x <- 1
 
 # Plot original incidence
 plot(data_infections,yaxs="i",ylab="daily incidence (%)",ylim=c(0,0.5),xlab="days")
