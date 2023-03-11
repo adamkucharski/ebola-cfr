@@ -6,12 +6,20 @@
 
 # Load libraries
 library(tidyverse)
+library(devtools)
+library(incidence2)
+library(coarseDataTools)
+install_github("epiverse-trace/epiparameter")
+library(epiparameter)
 
 # Define probability mass function for onset-to-death
-# Source: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)31387-4/fulltext
-onset_to_death_ebola <- function(x){dgamma(x,shape=1.651,scale=1/0.202)}
+onset_to_death_ebola <- epiparameter::epidist("ebola","onset_to_death")$pmf
+
+xx <- 0:20
+plot(xx,onset_to_death_ebola(xx),xlab="days")
 
 # Load data and functions
+# setwd("~/Documents/GitHub/ebola-cfr/")
 source("R/data_load.R")
 source("R/cfr_function.R")
 
@@ -32,6 +40,10 @@ out_cfr$nCFR
 # Delay adjusted CFR and 95% CI:
 out_cfr$cCFR
 
+# EMforCFR method in coarseDataTools (Note: work in progress):
+reporting.param <- rep(0,nrow(data1976_all_pick)-1)
+out_em_cfr <- EMforCFR(assumed.nu = onset_to_death_ebola(xx), alpha.start.values = reporting.param, full.data = data1976_all_pick)
+
 
 # Plot estimates over time on both 1976 and 2014 data ------------------------------------------
 
@@ -39,3 +51,4 @@ out_cfr$cCFR
 # Red lines, naive CFR calculation, i.e. deaths/cases, with 95% CI; blue lines, delay-adjusted calculation with 95%
 
 source("R/plot_examples.R")
+
