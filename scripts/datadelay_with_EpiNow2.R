@@ -6,6 +6,7 @@
 # Install libraries
 library(tidyverse)
 library(incidence2)
+library(devtools)
 
 #setwd("~/Documents/GitHub/epiverse-trace")
 install("datadelay")
@@ -50,10 +51,10 @@ dt_CFR_true_ll <- c(CFR_binomial_ll_true$estimate,CFR_binomial_ll_true$conf.int)
 
 # Convert Ebola line list into incidence ----------------------------------
 # Convert cases and deaths to incidence series
-case_data <- incidence2::incidence(data_ebola,disease_onset) |> complete_counts() |> rename(cases = count,date=date_index)
+case_data <- incidence2::incidence(data_ebola,"disease_onset") |> complete_dates() |> rename(cases = count,date=date_index) |> dplyr::select(cases,date)
 
 data_ebola_died <- data_ebola |> filter(status=="died")
-death_data <- incidence2::incidence(data_ebola_died,disease_ended) |> complete_counts() |> rename(deaths = count,date=date_index)
+death_data <- incidence2::incidence(data_ebola_died, "disease_ended") |> complete_dates() |> rename(deaths = count,date=date_index) |> dplyr::select(cases,date)
 
 data_ebola_ts <- merge(case_data,death_data,all=T) # merge timeseries
 data_ebola_ts[is.na(data_ebola_ts)] <- 0 # replace NA with zero counts
