@@ -17,7 +17,13 @@ n_inf <- length(data_infections) # number of days to consider
 data_infections <- data_infections #* rlnorm(n_inf,0,0.2) # add some noise
 
 # Set delay function pmf
-p_by_day <- epiparameter::epidist("SARS_CoV_2_wildtype","incubation")$pmf
+#p_by_day <- #epiparameter::epidist("SARS_CoV_2_wildtype","incubation")$pmf
+mean_p <- 5
+scale_p <- 1
+shift_p <- 0
+
+p_by_day <- function(x){dgamma(x,shape=mean_p/scale_p,scale=scale_p)}
+plot(1:20,p_by_day(1:20))
 
 # Define transition matrix to construct outcome data
 f_matrix <- matrix(0,nrow=n_inf,ncol=n_inf)
