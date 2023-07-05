@@ -31,7 +31,7 @@ data_ebola <- read_csv("https://3mmuwilir3.execute-api.eu-central-1.amazonaws.co
 
 # Estimate CFR for cases with known outcomes --------------------------------------------------
 data_ebola <- data_ebola |> mutate(Date_case = as.Date(ifelse(!is.na(Date_onset),Date_onset,Date_confirmation),"1970-01-01"))
-data_outcome <- data_ebola %>% filter(!is.na(Date_Death) | !is.na(Date_Recovered))
+data_outcome <- data_ebola |>  filter(!is.na(Date_Death) | !is.na(Date_Recovered))
 
 
 # Estimate CFR from incidence data --------------------------------------------------

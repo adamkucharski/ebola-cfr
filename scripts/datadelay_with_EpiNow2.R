@@ -10,6 +10,7 @@ library(devtools)
 
 #setwd("~/Documents/GitHub/epiverse-trace")
 install("datadelay")
+remotes::install_github("epiverse-trace/datadelay")
 library(datadelay)
 
 remotes::install_github("epiverse-trace/epiparameter")
@@ -30,7 +31,7 @@ onset_to_death_ebola <- epiparameter::epidist_db(
 #setwd("~/Documents/GitHub/ebola-cfr/")
 
 # Load line list 
-data_ebola <- read_csv("data/ebola_1976_linelist.csv")
+data_ebola_1976 <- read_csv("data/ebola_1976_linelist.csv")
 
 cut_off <- as.Date("1976-10-05") # date to analyse up to in real-time
 
@@ -71,37 +72,40 @@ lines(df_ebola_subset$date,df_ebola_subset$deaths,type="s",lwd=2,col="orange")
 
 
 # Estimate CFR with datadelay -------------------------------------------------
-dt_ncfr_static_ebola <- static_cfr(
+dt_ncfr_static_ebola <- estimate_static(
   df_ebola_subset,
   correct_for_delays = FALSE) |> 
-  format_cfr_neatly(type = "Naive")
+  format_output(estimate_type = "severity",type = "Naive")
 
-dt_ccfr_static_ebola <- static_cfr(
+dt_ccfr_static_ebola <- estimate_static(
   df_ebola_subset,
   correct_for_delays = TRUE,
   epi_dist = onset_to_death_ebola) |>
-  format_cfr_neatly(type = "Corrected")
+  format_output(estimate_type = "severity",type = "Corrected")
 
 
 # Estimate with EpiNow2 ---------------------------------------------------
 
-# Format parameters
+# Get parameters from epiparameter and format for EpiNow2
+param_ebola <- distributional::parameters(onset_to_death_ebola)
+
 onset_to_death_meansd <- epiparameter::gamma_shapescale2meansd(
-  shape = 2.4, # NOTE HARD CODING - NEED TO UPDATE WITH NEW EPIPARAMETER FUNCTIONALITY WHEN READY
-  scale = 1/0.3 # NOTE HARD CODING
+  shape = param_ebola[["shape"]],
+  scale = param_ebola[["scale"]] 
 )
 onset_to_death_logmean <- EpiNow2::convert_to_logmean(
   mean = onset_to_death_meansd[["mean"]],
   sd = onset_to_death_meansd[["sd"]]
 )
 onset_to_death_logsd <- EpiNow2::convert_to_logsd(
-  mean = onset_to_death_meansd[["mean"]], # NEED TO CHECK CONVERSION FROM GAMMA
+  mean = onset_to_death_meansd[["mean"]], 
   sd = onset_to_death_meansd[["sd"]]
 )
 
-# Format data
+# Format data for fitting
 data_epinow2 <- df_ebola_subset |> rename(primary = cases, secondary = deaths)
 
+# Estimate CFR
 cases_to_deaths <- EpiNow2::estimate_secondary(
   data_epinow2,
   delays = delay_opts(list(
@@ -131,7 +135,7 @@ tibble(cfr = cfr_samples) |>
   xlab("CFR") +
   ylab("Posterior density")
 
-dt_ccfr_static_ebola_epinow2 <- quantile(cfr_samples, c(0.5, 0.025, 0.975)) |> format_cfr_neatly(type = "EpiNow2 Corrected") ## median + 95% CI
+dt_ccfr_static_ebola_epinow2 <- quantile(cfr_samples, c(0.5, 0.025, 0.975)) |> format_output(type = "EpiNow2 Corrected") ## median + 95% CI
 
 # Compare datadelay and EpiNow2
 dt_static_clean_ebola <- rbind(dt_ncfr_static_ebola, # Naive incidence calculation
